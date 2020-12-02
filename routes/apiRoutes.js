@@ -1,54 +1,78 @@
-const dataBase = require("../db/db.json");
+var path = require("path");
 
-const router = require("express").Router();
-const store = require("../db/store");
+module.exports = function (app, fs) {
+  
+  const db = require("../db/db.json");
 
-// GET "/api/notes" responds with all notes from the database
+  let databaseFile = path.join(__dirname, "../db/db.json");
 
-router.get("/notes", (req, res) => {
-  store
-    .getNotes()
-    .then((notes) => res.json(notes))
-    .catch((err) => res.status(500).json(err));
-});
-
-router.post("/notes", (req, res) => {
-  store
-    .addNote(req.body)
-    .then((note) => res.json(note))
-    .catch((err) => res.status(500).json(err));
-});
-
-// DELETE "/api/notes" deletes the note with an id equal to req.params.id
-
-router.delete("/notes/:id", (req, res) => {
-  store
-    .removeNote(req.params.id)
-    .then(() => res.json({ ok: true }))
-    .catch((err) => res.status(500).json(err));
-});
-
-module.exports = router;
-
-module.exports = function (app) {
+  // Retrieve api notes
   app.get("/api/notes", function (req, res) {
-    return res.json(dataBase);
+    
+    res.json(db);
+  
   });
 
-  app.post("/api/notes", (req, res) => {
-    var newNote = req.body;
+  // Posting and Creating notes
+  app.post("/api/notes", function (req, res) {
+    
+    let newNote = req.body;
+    
+    // Establishing a user ID
+    let id = 1;
 
-    console.log(newNote);
+    for (let i = 0; i < db.length; i++) {
+    
+      let note = db[i];
 
-    dataBase.push(newNote);
+      if (note.id > id) {
+     
+        id = note.id;
+     
+      }
+    }
 
-    res.send(newNote);
+    // Assigning the new note the newest ID
+    newNote.id = id + 1;
+    
+    // Pushing the new note into the db.json
+    db.push(newNote);
+    
+    // Letting user know in the console that the note saved 
+    fs.writeFile(databaseFile, JSON.stringify(db), function (err) {
+      if (err) {
+        return console.log(err);
+      }
+      console.log("Note Saved");
+    });
+    res.json(newNote);
   });
 
-  app.delete("/api/notes/:id", (req, res) => {
-    store
-      .removeNote(req.params.id)
-      .then(() => res.json({ ok: true }))
-      .catch((err) => res.status(500).json(err));
+  // Deleting the chosen note based off ID
+  app.delete("/api/notes/:id", function (req, res) {
+    
+    let databaseFile = path.join(__dirname, "../db/db.json");
+    
+    // Through the db(database) to find the correct ID
+    for (let i = 0; i < db.length; i++) {
+      
+      if (db[i].id == req.params.id) {
+        
+        // Cutting out the note using the splice method
+        db.splice(i, 1);
+        break;
+
+      }
+    }
+    
+    // Writing in the console for the user to know the note deleted properly
+    fs.writeFile(databaseFile, JSON.stringify(db), function (err) {
+      if (err) {
+        return console.log(err);
+      } else {
+        console.log("Note deleted");
+      }
+    });
+    res.json(db);
   });
 };
