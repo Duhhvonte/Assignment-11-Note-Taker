@@ -3,7 +3,7 @@ const $noteText = $(".note-textarea");
 const $saveNoteBtn = $(".save-note");
 const $newNoteBtn = $(".new-note");
 const $noteList = $(".list-container .list-group");
-
+const $getStarted = $("#start");
 
 // activeNote is used to keep track of the note in the textarea
 let activeNote = {};
@@ -148,6 +148,9 @@ $noteList.on("click", ".delete-note", handleNoteDelete);
 $noteTitle.on("keyup", handleRenderSaveBtn);
 $noteText.on("keyup", handleRenderSaveBtn);
 
+$getStarted.on("click", function () {
+  location.href = "notes.html"
+});
 
 // Gets and renders the initial list of notes
 getAndRenderNotes();
