@@ -24,5 +24,5 @@ For users that need to keep track of a lot of information, it's easy to forget o
 
 ## Info / Questions
 
-- [Github](https:/github.com/Duhhvonte)
+- [Devonte Letts](https://github.com/Duhhvonte)
 - devonte.letts@gmail.com
