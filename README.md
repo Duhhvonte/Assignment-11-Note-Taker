@@ -22,9 +22,8 @@ For users that need to keep track of a lot of information, it's easy to forget o
 
 ## License
 
-![License](https://img.shields.io/badge/License-Made%20by%20Duhhvonte-orange)
+![License](https://img.shields.io/badge/License-Made%20by%20spacedel-orange)
 
 ## Info / Questions
 
-- [Devonte Letts](https://github.com/Duhhvonte)
-- devonte.letts@gmail.com
+- [Devonte Letts](https://github.com/spacedel)
